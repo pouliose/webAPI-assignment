@@ -2,8 +2,8 @@ package org.cite.service;
 
 import lombok.AllArgsConstructor;
 import org.cite.AppMain;
-import org.cite.dto.ResponseResult;
-import org.cite.dto.ResponseStatus;
+import org.cite.utils.ResponseResult;
+import org.cite.utils.ResponseStatus;
 import org.cite.model.Attribute;
 import org.cite.model.Employee;
 import org.cite.repository.EmployeeRepository;
@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @AllArgsConstructor
 
@@ -41,7 +42,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public ResponseResult<Employee> readEmployee(int employeeId) {
+    public ResponseResult<Employee> readEmployee(UUID employeeId) {
         try {
             return new ResponseResult<>(employeeRepository.findById(employeeId).get(), ResponseStatus.SUCCESS, "Oκ");
         } catch (Exception e) {
@@ -50,7 +51,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public ResponseResult<Employee> updateEmployee(int employeeId, Employee employee) {
+    public ResponseResult<Employee> updateEmployee(UUID employeeId, Employee employee) {
         try {
             Optional<Employee> ownerDb = employeeRepository.findById(employeeId);
             if (ownerDb.isEmpty())
@@ -75,7 +76,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public ResponseResult<Boolean> deleteEmployee(int employeeId) {
+    public ResponseResult<Boolean> deleteEmployee(UUID employeeId) {
         try {
             Optional<Employee> employeeDb = employeeRepository.findById(employeeId);
             if (employeeDb.isEmpty())
@@ -88,7 +89,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public ResponseResult<List<Attribute>> getAttributesOfEmployee(int employeeId) {
+    public ResponseResult<List<Attribute>> getAttributesOfEmployee(UUID employeeId) {
         try {
             Optional<Employee> employeeOptional = employeeRepository.findById(employeeId);
             if (employeeOptional.isEmpty())

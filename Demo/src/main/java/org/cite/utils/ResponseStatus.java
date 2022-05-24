@@ -1,4 +1,4 @@
-package org.cite.dto;
+package org.cite.utils;
 
 public enum ResponseStatus {
     SUCCESS,

@@ -5,10 +5,12 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.List;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -18,8 +20,8 @@ import java.util.List;
 
 public class Attribute {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    @Type(type = "uuid-char")
+    private UUID id = UUID.randomUUID();
     @NotBlank(message = "Attribute name is mandatory field.")
     private String attributeName;
     @NotBlank(message = "Attribute value is mandatory field.")

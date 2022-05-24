@@ -2,18 +2,17 @@ package org.cite.service;
 
 
 import lombok.AllArgsConstructor;
-import org.cite.dto.ResponseResult;
-import org.cite.dto.ResponseStatus;
+import org.cite.utils.ResponseResult;
+import org.cite.utils.ResponseStatus;
 import org.cite.model.Attribute;
 import org.cite.model.Employee;
 import org.cite.repository.AttributeRepository;
 import org.cite.repository.EmployeeRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
+import java.util.UUID;
 
 @AllArgsConstructor
 @Service
@@ -43,7 +42,7 @@ public class AttributeServiceImpl implements AttributeService {
     }
 
     @Override
-    public ResponseResult<Attribute> readAttribute(int attributeId) {
+    public ResponseResult<Attribute> readAttribute(UUID attributeId) {
         try {
             Optional<Attribute> attributeDb = attributeRepository.findById(attributeId);
             return new ResponseResult<>(attributeDb.get(), ResponseStatus.SUCCESS, "Ok");
@@ -53,7 +52,7 @@ public class AttributeServiceImpl implements AttributeService {
     }
 
     @Override
-    public ResponseResult<Attribute> updateAttribute(int attributeId, Attribute attribute) {
+    public ResponseResult<Attribute> updateAttribute(UUID attributeId, Attribute attribute) {
         Optional<Attribute> propertyDb = attributeRepository.findById(attributeId);
         if (propertyDb.isEmpty())
             return new ResponseResult<>(null, ResponseStatus.ATTRIBUTE_NOT_FOUND, "Attribute id not found.");
@@ -71,7 +70,7 @@ public class AttributeServiceImpl implements AttributeService {
     }
 
     @Override
-    public ResponseResult<Boolean> deleteAttribute(int attributeId) {
+    public ResponseResult<Boolean> deleteAttribute(UUID attributeId) {
         try {
             Optional<Attribute> attributeDb = attributeRepository.findById(attributeId);
             if (attributeDb.isEmpty())
@@ -95,7 +94,7 @@ public class AttributeServiceImpl implements AttributeService {
     }
 
     @Override
-    public ResponseResult<Boolean> addAttributeToEmployee(int employeeId, int attributeId) {
+    public ResponseResult<Boolean> addAttributeToEmployee(UUID employeeId, UUID attributeId) {
         try {
             Optional<Employee> employeeOptional = employeeRepository.findById(employeeId);
             Optional<Attribute> attributeOptional = attributeRepository.findById(attributeId);
@@ -120,7 +119,7 @@ public class AttributeServiceImpl implements AttributeService {
     }
 
     @Override
-    public ResponseResult<Boolean> deleteAttributeFromEmployee( int employeeId, int attributeId) {
+    public ResponseResult<Boolean> deleteAttributeFromEmployee(UUID employeeId, UUID attributeId) {
         try {
             Optional<Employee> employeeOptional = employeeRepository.findById(employeeId);
             if (employeeOptional.isPresent()) {

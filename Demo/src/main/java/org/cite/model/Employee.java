@@ -6,11 +6,13 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -19,17 +21,13 @@ import java.util.List;
 @Entity
 public class Employee {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    //@Column(name= "employeeId")
-    private int employeeId;
+    @Type(type = "uuid-char")
+    private UUID employeeId = UUID.randomUUID();
     @NotBlank(message = "Name is mandatory field.")
     private String employeeName;
-    //@NotBlank(message = "Date of hire is mandatory field.")
     private LocalDate hireDate;
 
-    /*@ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "supervisorId", referencedColumnName = "employeeId")*/
-    private int supervisorId;
+    private UUID supervisorId;
 
     @ManyToMany(cascade = { CascadeType.REMOVE, CascadeType.PERSIST })
     @JsonIgnore
@@ -40,7 +38,7 @@ public class Employee {
     private String address;
 
 
-    public Employee(String employeeName, LocalDate hireDate, int supervisorId) {
+    public Employee(String employeeName, LocalDate hireDate, UUID supervisorId) {
         this.employeeName = employeeName;
         this.hireDate = hireDate;
         this.supervisorId = supervisorId;

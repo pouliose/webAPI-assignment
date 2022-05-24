@@ -43,12 +43,12 @@ public class PopulateDataToDb {
 
     private static List<Employee> generateEmployees() {
         List<Employee> employees = new ArrayList<>();
-        Employee employee1 = new Employee( "Greg", LocalDate.of(2020, 1, 3),0);
-        Employee employee2 = new Employee( "Oleg", LocalDate.of(2020, 3, 23),1);
-        Employee employee3 = new Employee( "Pete", LocalDate.of(2020, 4, 7),2);
-        Employee employee4 = new Employee( "Paul", LocalDate.of(2020, 6, 9),1);
-        Employee employee5 = new Employee( "Aura", LocalDate.of(2021, 11, 3),1);
-        Employee employee6 = new Employee( "Phil", LocalDate.of(2021, 7, 7),1);
+        Employee employee1 = new Employee( "Greg", LocalDate.of(2020, 1, 3),null);
+        Employee employee2 = new Employee( "Oleg", LocalDate.of(2020, 3, 23),employee1.getEmployeeId());
+        Employee employee3 = new Employee( "Pete", LocalDate.of(2020, 4, 7),employee2.getEmployeeId());
+        Employee employee4 = new Employee( "Paul", LocalDate.of(2020, 6, 9),employee1.getEmployeeId());
+        Employee employee5 = new Employee( "Aura", LocalDate.of(2021, 11, 3),employee1.getEmployeeId());
+        Employee employee6 = new Employee( "Phil", LocalDate.of(2021, 7, 7),employee1.getEmployeeId());
         employees.add(employee1);
         employees.add(employee2);
         employees.add(employee3);
@@ -59,9 +59,6 @@ public class PopulateDataToDb {
     }
     private static List<Attribute> generateAttributes() {
         List<Attribute> attributes = new ArrayList<>();
-        Employee employee1 = new Employee( "Greg", LocalDate.of(2020, 1, 3), 0);
-        List<Employee> employee1List = new ArrayList<>();
-        employee1List.add(employee1);
 
         Attribute attribute1 = new Attribute("Height", "Tall");
         Attribute attribute2 = new Attribute("Height", "Short");

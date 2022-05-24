@@ -1,7 +1,7 @@
 package org.cite.controller;
 
 import lombok.AllArgsConstructor;
-import org.cite.dto.ResponseResult;
+import org.cite.utils.ResponseResult;
 import org.cite.model.Attribute;
 import org.cite.model.Employee;
 import org.cite.service.AttributeService;
@@ -9,6 +9,7 @@ import org.cite.service.EmployeeService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @AllArgsConstructor
 
@@ -24,7 +25,7 @@ public class EmployeeController {
     }
 
     @GetMapping("/{employeeId}")
-    public ResponseResult<Employee> get(@PathVariable("employeeId") int employeeId) {
+    public ResponseResult<Employee> get(@PathVariable("employeeId") UUID employeeId) {
         return employeeService.readEmployee(employeeId);
     }
 
@@ -36,26 +37,26 @@ public class EmployeeController {
 
 
     @PutMapping("/{employeeId}")
-    public ResponseResult<Employee> update(@PathVariable("employeeId") int employeeId, @RequestBody Employee employee) {
+    public ResponseResult<Employee> update(@PathVariable("employeeId") UUID employeeId, @RequestBody Employee employee) {
         return employeeService.updateEmployee(employeeId, employee);
     }
 
     @DeleteMapping("/{employeeId}")
-    public ResponseResult<Boolean> delete(@PathVariable("employeeId") int employeeId) {
+    public ResponseResult<Boolean> delete(@PathVariable("employeeId") UUID employeeId) {
         return employeeService.deleteEmployee(employeeId);
     }
 
     @GetMapping("/{employeeId}/attributes")
-    public ResponseResult<List<Attribute>> getAttributesOfEmployee(@PathVariable("employeeId") int employeeId) {
+    public ResponseResult<List<Attribute>> getAttributesOfEmployee(@PathVariable("employeeId") UUID employeeId) {
         return employeeService.getAttributesOfEmployee(employeeId);
     }
 
     @PostMapping(value = "/{employeeId}/attributes/{attributeId}")
-    public ResponseResult<Boolean> addAttributeToEmployee(@PathVariable("employeeId") int employeeId, @PathVariable("attributeId") int attributeId) {
+    public ResponseResult<Boolean> addAttributeToEmployee(@PathVariable("employeeId") UUID employeeId, @PathVariable("attributeId") UUID attributeId) {
         return attributeService.addAttributeToEmployee(employeeId, attributeId);
     }
     @DeleteMapping(value = "/{employeeId}/attributes/{attributeId}")
-    public ResponseResult<Boolean> deleteAttributeFromEmployee(@PathVariable("employeeId") int employeeId, @PathVariable("attributeId") int attributeId) {
+    public ResponseResult<Boolean> deleteAttributeFromEmployee(@PathVariable("employeeId") UUID employeeId, @PathVariable("attributeId") UUID attributeId) {
         return attributeService.deleteAttributeFromEmployee(employeeId, attributeId);
     }
 }

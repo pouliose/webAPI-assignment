@@ -1,4 +1,4 @@
-package org.cite.dto;
+package org.cite.utils;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
