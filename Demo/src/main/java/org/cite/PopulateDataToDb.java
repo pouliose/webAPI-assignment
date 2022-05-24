@@ -29,19 +29,15 @@ public class PopulateDataToDb {
 
     @EventListener(ApplicationReadyEvent.class)
     public void restoreDatabase() {
-        log.info("Clearing repositories 1st.");
+        log.info("Clearing repositories...");
         employeeRepository.deleteAll();
         attributeRepository.deleteAll();
         employeeRepository.saveAll(generateEmployees());
         attributeRepository.saveAll(generateAttributes());
-        log.info("Employees-Attributes saved!");
-        //employeeRepository.saveAll(matchAttributesEmployees(attributeRepository.findAll(), employeeRepository.findAll()));
+        log.info("Initial Employees-Attributes saved!");
         matchEmployeesWithAttributes(employeeRepository.findAll(), attributeRepository.findAll());
 
         updateEmployeesAndAttributes();
-        //matchAttributesWithEmployees(employeeRepository.findAll(), attributeRepository.findAll());
-        //updateEmployeesAndAttributes();
-
         log.info("Database setup completed!");
     }
 
@@ -128,68 +124,10 @@ public class PopulateDataToDb {
         attribute6.setEmployees(Stream.of(employee2).collect(Collectors.toList()));
         updatedAttributes.add(attribute6);
         updatedAttributes  = totalAttributes;
-
-/*        updatedEmployees = totalEmployees.stream().map(employee ->
-        {
-            Attribute attributeRandom1 = totalAttributes.get((int) (Math.random() * totalAttributes.subList(0,3).size()));
-            Attribute attributeRandom2 = totalAttributes.get((int) (Math.random() * totalAttributes.subList(4,6).size()));
-            List<Attribute> attributes = new ArrayList<>();
-            attributes.add(attributeRandom1);
-            attributes.add(attributeRandom2);
-            employee.setAttributes(attributes);
-
-            if(updatedAttributes.contains(attributeRandom1)){
-                updatedAttributes.remove(attributeRandom1);
-            }
-            List<Employee> employees = new ArrayList<>();
-            try {
-                attributeRandom1.getEmployees();
-                employees.add(employee);
-            } catch (Exception e){
-                attributeRandom1.getEmployees().add(employee);
-            }
-            attributeRandom1.setEmployees(employees);
-            updatedAttributes.add(attributeRandom1);
-
-            if(updatedAttributes.contains(attributeRandom2)){
-                updatedAttributes.remove(attributeRandom2);
-            }
-            employees = new ArrayList<>();
-            if(attributeRandom2.getEmployees() == null){
-                employees.add(employee);
-                attributeRandom2.setEmployees(employees);
-            } else
-                try {
-                    attributeRandom2.getEmployees().add(employee);
-
-                } catch (Exception e){
-                    employees.add(employee);
-                    attributeRandom2.setEmployees(employees);
-                }
-
-            updatedAttributes.add(attributeRandom2);
-            return employee; }).collect(Collectors.toList());*/
     }
 
     private void updateEmployeesAndAttributes(){
         employeeRepository.saveAll(updatedEmployees);
         attributeRepository.saveAll(updatedAttributes);
-    }
-    private static List<Employee> matchAttributesEmployees(List<Attribute> attributes, List<Employee> employees) {
-        /*for (Employee employee : employees) {
-            Attribute attributeRandom1 = attributes.get((int) (Math.random() * attributes.subList(0,3).size()));
-            Attribute attributeRandom2 = attributes.get((int) (Math.random() * attributes.subList(4,6).size()));
-            employee.setAttribute(Stream.of(attributeRandom1, attributeRandom2).collect(Collectors.toList()));
-            List<Employee> employeesList =  attributeRandom1.getEmployee();
-            employeesList.add(employee);
-            attributeRandom1.setEmployee(employeesList);
-            attributeRandom2.setEmployee(employeesList);
-        }
-        log.info("Properties and owners were matched!");*/
-        return employees;
-    }
-
-    private static void matchAttributesWithEmployees(List<Employee> totalEmployees, List<Attribute> totalAttributes){
-
     }
 }

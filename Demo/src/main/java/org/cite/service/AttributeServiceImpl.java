@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @Service
@@ -75,6 +76,20 @@ public class AttributeServiceImpl implements AttributeService {
             Optional<Attribute> attributeDb = attributeRepository.findById(attributeId);
             if (attributeDb.isEmpty())
                 return new ResponseResult<Boolean>(false, ResponseStatus.ATTRIBUTE_CAN_NOT_BE_DELETED, "Delete has failed.");
+            List<Employee> employees = employeeRepository.findAll();
+            for (Employee employee : employees) {
+                if (employee.getAttributes().contains(attributeDb.get())){
+                    List<Attribute> tempAttributes = new ArrayList<>();
+                    tempAttributes = employee.getAttributes();
+                    tempAttributes.remove(attributeDb.get());
+                    employee.setAttributes(tempAttributes);
+                }
+            }
+
+            //employeeRepository.deleteAll();
+            employeeRepository.saveAll(employees);
+            attributeDb.get().setEmployees(null);
+            attributeRepository.save( attributeDb.get());
             attributeRepository.delete(attributeDb.get());
             return new ResponseResult<Boolean>(true, ResponseStatus.SUCCESS, "Ok");
         } catch (Exception e) {

@@ -31,7 +31,7 @@ public class Employee {
     @JoinColumn(name = "supervisorId", referencedColumnName = "employeeId")*/
     private int supervisorId;
 
-    @ManyToMany
+    @ManyToMany(cascade = { CascadeType.REMOVE, CascadeType.PERSIST })
     @JsonIgnore
     private List<Attribute> attributes;
 
