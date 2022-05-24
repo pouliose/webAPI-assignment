@@ -85,8 +85,6 @@ public class AttributeServiceImpl implements AttributeService {
                     employee.setAttributes(tempAttributes);
                 }
             }
-
-            //employeeRepository.deleteAll();
             employeeRepository.saveAll(employees);
             attributeDb.get().setEmployees(null);
             attributeRepository.save( attributeDb.get());
@@ -117,4 +115,29 @@ public class AttributeServiceImpl implements AttributeService {
         return new ResponseResult<Boolean>(false, ResponseStatus.EMPLOYEE_NOT_FOUND, "Employee or attribute cannot be found");
     }
 
+    @Override
+    public ResponseResult<Boolean> deleteAttributeFromEmployee( int employeeId, int attributeId) {
+        /*Employee employee = employeeRepository.findById(employeeId).get();
+        List<Attribute> attributes = employee.getAttributes();
+        attributes.remove(attributeRepository.getById(attributeId));
+        employee.setAttributes(attributes);
+        employeeRepository.save(employee);*/
+
+        try {
+            Optional<Employee> employeeOptional = employeeRepository.findById(employeeId);
+            if (employeeOptional.isPresent()) {
+                List<Attribute> attributes = employeeOptional.get().getAttributes();
+                Optional<Attribute> attributeOptional = attributeRepository.findById(attributeId);
+                if(attributeOptional.isPresent()){
+                    attributes.remove(attributeOptional.get());
+                    employeeOptional.get().setAttributes(attributes);
+                    employeeRepository.save(employeeOptional.get());
+                }
+                return new ResponseResult<>(true, ResponseStatus.SUCCESS, "Ok");
+            }
+        } catch (Exception e) {
+            e.getMessage();
+        }
+        return new ResponseResult<Boolean>(false, ResponseStatus.EMPLOYEE_NOT_FOUND, "Employee or attribute cannot be found");
+    }
 }

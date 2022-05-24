@@ -11,7 +11,8 @@ public interface AttributeService {
     ResponseResult<Attribute> readAttribute(int propertyId);
     ResponseResult<Attribute> updateAttribute(int attributeId, Attribute attribute);
     ResponseResult<Boolean> deleteAttribute(int attributeId);
-    ResponseResult<Boolean> addAttributeToEmployee(int attributeId, int employeeId);
+    ResponseResult<Boolean> addAttributeToEmployee( int employeeId, int attributeId);
+    ResponseResult<Boolean> deleteAttributeFromEmployee( int employeeId, int attributeId);
 
 }
 

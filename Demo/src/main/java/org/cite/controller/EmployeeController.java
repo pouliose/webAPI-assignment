@@ -54,4 +54,8 @@ public class EmployeeController {
     public ResponseResult<Boolean> addAttributeToEmployee(@PathVariable("employeeId") int employeeId, @PathVariable("attributeId") int attributeId) {
         return attributeService.addAttributeToEmployee(employeeId, attributeId);
     }
+    @DeleteMapping(value = "/{employeeId}/attributes/{attributeId}")
+    public ResponseResult<Boolean> deleteAttributeFromEmployee(@PathVariable("employeeId") int employeeId, @PathVariable("attributeId") int attributeId) {
+        return attributeService.deleteAttributeFromEmployee(employeeId, attributeId);
+    }
 }
