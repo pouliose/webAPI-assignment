@@ -10,7 +10,6 @@ import lombok.Setter;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -25,16 +24,21 @@ public class Employee {
     private int employeeId;
     @NotBlank(message = "Name is mandatory field.")
     private String employeeName;
-    @NotBlank(message = "Date of hire is mandatory field.")
+    //@NotBlank(message = "Date of hire is mandatory field.")
     private LocalDate hireDate;
 
     /*@ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "supervisorId", referencedColumnName = "employeeId")*/
     private int supervisorId;
 
-    @ManyToMany(mappedBy = "employees")
+    @ManyToMany
     @JsonIgnore
     private List<Attribute> attributes;
+
+    private LocalDate birthday;
+    private boolean carOwnership;
+    private String address;
+
 
     public Employee(String employeeName, LocalDate hireDate, int supervisorId) {
         this.employeeName = employeeName;

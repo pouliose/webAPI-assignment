@@ -13,7 +13,6 @@ import org.springframework.context.event.EventListener;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -40,7 +39,7 @@ public class PopulateDataToDb {
         matchEmployeesWithAttributes(employeeRepository.findAll(), attributeRepository.findAll());
 
         updateEmployeesAndAttributes();
-        //matchAttributesWithEmployees(employeeRepository.findAll(), atttributeRepository.findAll());
+        //matchAttributesWithEmployees(employeeRepository.findAll(), attributeRepository.findAll());
         //updateEmployeesAndAttributes();
 
         log.info("Database setup completed!");
@@ -128,6 +127,7 @@ public class PopulateDataToDb {
         updatedAttributes.add(attribute7);
         attribute6.setEmployees(Stream.of(employee2).collect(Collectors.toList()));
         updatedAttributes.add(attribute6);
+        updatedAttributes  = totalAttributes;
 
 /*        updatedEmployees = totalEmployees.stream().map(employee ->
         {

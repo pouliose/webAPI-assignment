@@ -10,6 +10,7 @@ import org.cite.repository.AttributeRepository;
 import org.cite.repository.EmployeeRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,6 +21,16 @@ public class AttributeServiceImpl implements AttributeService {
 
     private AttributeRepository attributeRepository;
     private EmployeeRepository employeeRepository;
+
+    @Override
+    public ResponseResult<Attribute> createAttribute(Attribute attribute) {
+        try {
+            return new ResponseResult<>(attributeRepository.save(attribute), ResponseStatus.SUCCESS, "Oκ");
+        } catch (Exception e) {
+            e.getMessage();
+        }
+        return new ResponseResult<>(null, ResponseStatus.ATTRIBUTE_NOT_CREATED, "Save has failed.");
+    }
 
     @Override
     public ResponseResult<List<Attribute>> readAttribute() {
@@ -77,7 +88,12 @@ public class AttributeServiceImpl implements AttributeService {
             Optional<Employee> employeeOptional = employeeRepository.findById(employeeId);
             Optional<Attribute> attributeOptional = attributeRepository.findById(attributeId);
             if (employeeOptional.isPresent()) {
-                attributeOptional.get().getEmployees().add(employeeOptional.get());
+                List<Attribute> tempAttributes = new ArrayList<>();
+                tempAttributes= employeeOptional.get().getAttributes();
+                tempAttributes.add(attributeOptional.get());
+                employeeOptional.get().setAttributes(tempAttributes);
+                employeeRepository.save(employeeOptional.get());
+                //attributeOptional.get().getEmployees().add(employeeOptional.get());
                 return new ResponseResult<>(true, ResponseStatus.SUCCESS, "Ok");
             }
         } catch (Exception e) {

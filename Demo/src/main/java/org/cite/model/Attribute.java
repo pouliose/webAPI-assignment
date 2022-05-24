@@ -8,7 +8,6 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -26,7 +25,8 @@ public class Attribute {
     @NotBlank(message = "Attribute value is mandatory field.")
     private String attributeValue;
 
-    @ManyToMany
+    @ManyToMany(mappedBy = "attributes")
+    @JsonIgnore
     private List<Employee> employees;
 
     public Attribute(String attributeName, String attributeValue, List<Employee> employees) {

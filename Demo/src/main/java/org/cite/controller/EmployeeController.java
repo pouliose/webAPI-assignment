@@ -50,8 +50,8 @@ public class EmployeeController {
         return employeeService.getAttributesOfEmployee(employeeId);
     }
 
-    @PostMapping(value = "/{employeeId}/attributes/attributeId")
-    public ResponseResult<Boolean> addAttributeToEmployee(@PathVariable("employeeId") int employeeId, @RequestBody int attributeId) {
+    @PostMapping(value = "/{employeeId}/attributes/{attributeId}")
+    public ResponseResult<Boolean> addAttributeToEmployee(@PathVariable("employeeId") int employeeId, @PathVariable("attributeId") int attributeId) {
         return attributeService.addAttributeToEmployee(employeeId, attributeId);
     }
 }

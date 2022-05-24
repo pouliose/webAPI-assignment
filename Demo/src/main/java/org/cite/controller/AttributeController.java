@@ -16,6 +16,11 @@ import java.util.List;
 public class AttributeController {
     private AttributeService attributeService;
 
+    @PostMapping(value= "")
+    public ResponseResult<Attribute> create(@RequestBody Attribute attribute) {
+        return attributeService.createAttribute(attribute);
+    }
+
     @GetMapping(value = "")
     public ResponseResult<List<Attribute>> get() {
         return attributeService.readAttribute() ;
