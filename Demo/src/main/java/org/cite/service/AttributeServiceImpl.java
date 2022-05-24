@@ -75,12 +75,11 @@ public class AttributeServiceImpl implements AttributeService {
         try {
             Optional<Attribute> attributeDb = attributeRepository.findById(attributeId);
             if (attributeDb.isEmpty())
-                return new ResponseResult<Boolean>(false, ResponseStatus.ATTRIBUTE_CAN_NOT_BE_DELETED, "Delete has failed.");
+                return new ResponseResult<>(false, ResponseStatus.ATTRIBUTE_CAN_NOT_BE_DELETED, "Delete has failed.");
             List<Employee> employees = employeeRepository.findAll();
             for (Employee employee : employees) {
                 if (employee.getAttributes().contains(attributeDb.get())){
-                    List<Attribute> tempAttributes = new ArrayList<>();
-                    tempAttributes = employee.getAttributes();
+                    List<Attribute> tempAttributes = employee.getAttributes();
                     tempAttributes.remove(attributeDb.get());
                     employee.setAttributes(tempAttributes);
                 }
@@ -89,9 +88,9 @@ public class AttributeServiceImpl implements AttributeService {
             attributeDb.get().setEmployees(null);
             attributeRepository.save( attributeDb.get());
             attributeRepository.delete(attributeDb.get());
-            return new ResponseResult<Boolean>(true, ResponseStatus.SUCCESS, "Ok");
+            return new ResponseResult<>(true, ResponseStatus.SUCCESS, "Ok");
         } catch (Exception e) {
-            return new ResponseResult<Boolean>(false, ResponseStatus.ATTRIBUTE_CAN_NOT_BE_DELETED, "Delete has failed.");
+            return new ResponseResult<>(false, ResponseStatus.ATTRIBUTE_CAN_NOT_BE_DELETED, "Delete has failed.");
         }
     }
 
@@ -101,28 +100,27 @@ public class AttributeServiceImpl implements AttributeService {
             Optional<Employee> employeeOptional = employeeRepository.findById(employeeId);
             Optional<Attribute> attributeOptional = attributeRepository.findById(attributeId);
             if (employeeOptional.isPresent()) {
-                List<Attribute> tempAttributes = new ArrayList<>();
-                tempAttributes= employeeOptional.get().getAttributes();
-                tempAttributes.add(attributeOptional.get());
-                employeeOptional.get().setAttributes(tempAttributes);
-                employeeRepository.save(employeeOptional.get());
-                //attributeOptional.get().getEmployees().add(employeeOptional.get());
-                return new ResponseResult<>(true, ResponseStatus.SUCCESS, "Ok");
+                if(attributeOptional.isPresent()){
+                    List<Attribute> tempAttributes =  employeeOptional.get().getAttributes();
+                    if (tempAttributes.contains(attributeOptional.get())){
+                        return new ResponseResult<>(true, ResponseStatus.EMPLOYEE_CANNOT_BE_UPDATED, "Attribute already exists.");
+                    }
+                    tempAttributes.add(attributeOptional.get());
+                    employeeOptional.get().setAttributes(tempAttributes);
+                    employeeRepository.save(employeeOptional.get());
+                    return new ResponseResult<>(true, ResponseStatus.SUCCESS, "Ok");
+                }
+                return new ResponseResult<>(true, ResponseStatus.ATTRIBUTE_NOT_FOUND, "Attribute cannot be found.");
             }
+            return new ResponseResult<>(true, ResponseStatus.EMPLOYEE_NOT_FOUND, "Employee cannot be found.");
         } catch (Exception e) {
             e.getMessage();
+            return new ResponseResult<>(false, ResponseStatus.EMPLOYEE_CANNOT_BE_UPDATED, "Add process failed.");
         }
-        return new ResponseResult<Boolean>(false, ResponseStatus.EMPLOYEE_NOT_FOUND, "Employee or attribute cannot be found");
     }
 
     @Override
     public ResponseResult<Boolean> deleteAttributeFromEmployee( int employeeId, int attributeId) {
-        /*Employee employee = employeeRepository.findById(employeeId).get();
-        List<Attribute> attributes = employee.getAttributes();
-        attributes.remove(attributeRepository.getById(attributeId));
-        employee.setAttributes(attributes);
-        employeeRepository.save(employee);*/
-
         try {
             Optional<Employee> employeeOptional = employeeRepository.findById(employeeId);
             if (employeeOptional.isPresent()) {
@@ -132,12 +130,14 @@ public class AttributeServiceImpl implements AttributeService {
                     attributes.remove(attributeOptional.get());
                     employeeOptional.get().setAttributes(attributes);
                     employeeRepository.save(employeeOptional.get());
+                    return new ResponseResult<>(true, ResponseStatus.SUCCESS, "Ok");
                 }
-                return new ResponseResult<>(true, ResponseStatus.SUCCESS, "Ok");
+                return new ResponseResult<>(true, ResponseStatus.ATTRIBUTE_NOT_FOUND, "Attribute cannot be found.");
             }
+            return new ResponseResult<>(true, ResponseStatus.EMPLOYEE_NOT_FOUND, "Employee cannot be found.");
         } catch (Exception e) {
             e.getMessage();
+            return new ResponseResult<>(false, ResponseStatus.EMPLOYEE_CANNOT_BE_UPDATED, "Delete process failed.");
         }
-        return new ResponseResult<Boolean>(false, ResponseStatus.EMPLOYEE_NOT_FOUND, "Employee or attribute cannot be found");
     }
 }
