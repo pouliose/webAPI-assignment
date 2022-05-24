@@ -29,8 +29,8 @@
 ## Future Work
 
 <p> <ul><li>Further implementation in validating input data</li>
-<li>Ability to filter employyes according to a specific attribute</li>
-<li>Views implemented with frontend stack</li></ul> </p>
+<li>Ability to filter employees according to a specific attribute</li>
+<li>Frontend functionality</li></ul> </p>
 
 <p style="text-align: right">(<a href="#top">back to top</a>)</p>
 
